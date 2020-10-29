@@ -3,6 +3,9 @@ import os
 
 from discord.embeds import Embed
 
+# Constant for the Discord UID
+UID = 578624574208475136
+
 class MyClient(discord.Client):
     enable = False
 
@@ -19,17 +22,23 @@ class MyClient(discord.Client):
         # only sends a message if the command user isnt the bot itself
         if message.author == self.user:
             return
-        # if message.author.id == 372064836848189440:
-        #     await message.channel.send("K.")
+        elif message.author.id == UID:
+            if message.content.startswith("$"):
+                await message.channel.send("I don't listen to you lol")
+            else:
+                if self.enable == True:
+                    await message.channel.send("K.")
         
-        if message.content.startswith("$"):
+        elif message.content.startswith("$"):
             tokens: List[str] = message.content[1:].split(' ')
             if self.enable is False:
                 if tokens[0] == "enable":
                     await message.channel.send("Torture mode enabled. Get ready Miles.")
                     self.enable = True
                 elif tokens[0] == 'help':
-                        await option(message.channel)
+                    await option(message.channel)
+                elif tokens[0] == 'status':
+                    await message.channel.send("I'm up and running, and ready to torture!")
                 else:
                     await message.channel.send("Torture mode is disabled. Type $enable to turn it on, or type $help.")
             else:
@@ -40,6 +49,8 @@ class MyClient(discord.Client):
                 elif tokens[0] == "disable":
                     await message.channel.send("Disabling torture mode.")
                     self.enable = False
+                elif tokens[0] == 'status':
+                    await message.channel.send("I'm up and running, and ready to torture!")
                 else:
                     await message.channel.send("Invalid command. Check your spelling or type $help for a list of options")
 
@@ -64,6 +75,11 @@ async def option(channel) -> None:
     embed_var.add_field(
         name="$disable",
         value="Disables torture mode.",
+        inline=False
+    )
+    embed_var.add_field(
+        name="$status",
+        value="Confirms that I'm up and running.",
         inline=False
     )
     await channel.send(embed=embed_var)
