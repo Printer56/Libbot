@@ -4,7 +4,7 @@ import os
 from discord.embeds import Embed
 
 # Constant for the Discord UID
-UID = 578624574208475136
+UID = 0
 
 class MyClient(discord.Client):
     enable = False
