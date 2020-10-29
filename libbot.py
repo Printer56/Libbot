@@ -1,10 +1,11 @@
 import discord
 import os
+import random
 
 from discord.embeds import Embed
 
 # Constant for the Discord UID
-UID = 0
+UID = 335130747612561418
 
 class MyClient(discord.Client):
     enable = False
@@ -23,11 +24,15 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         elif message.author.id == UID:
+            tokens = message.content.split(' ')
             if message.content.startswith("$"):
                 await message.channel.send("I don't listen to you lol")
             else:
                 if self.enable == True:
                     await message.channel.send("K.")
+            if random.randint(1, 15) == 15 and self.enable == True:
+                await message.channel.send("Deleting message loser")
+                await message.delete()
         
         elif message.content.startswith("$"):
             tokens: List[str] = message.content[1:].split(' ')
