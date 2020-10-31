@@ -14,6 +14,7 @@ class MyClient(discord.Client):
     Class initializing Discord client.
     """
     enable = False
+    swear_words = ['fuck', 'shit', 'ass', 'damn', 'stupid', 'asshole', 'bitch', 'dick', 'bastard', 'cunt']
 
     async def on_ready(self) -> None:
         """
@@ -23,7 +24,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message) -> None:
         """
-        Returns a message easy
+        Defines the usable commands and catches the messages
         """
         # only sends a message if the command user isnt the bot itself
         channel = message.channel
@@ -41,18 +42,24 @@ class MyClient(discord.Client):
                     self.enable = False
                 await message.channel.send("I don't listen to you lol")
             else:
+                swear_words = []
+                for word in tokens:
+                    if word in swear_words:
+                        await message.channel.send("No swearing! Message deleted")
+                        await message.delete()
                 if self.enable == True:
-                    num = random.randint(1, 2)
+                    num = random.randint(1, 3)
                     if num == 1:
                         await message.channel.send("K.")
                     else:
                         await message.channel.send(":neutral_face:")
-            if random.randint(1, 15) == 15 and self.enable == True:
-                await message.channel.send("Deleting message loser")
-                await message.delete()
+                if random.randint(1, 13) == 13 and self.enable == True:
+                    await message.channel.send("Deleting message loser")
+                    await message.delete()
         
         elif message.content.startswith("$"):
             tokens: List[str] = message.content[1:].split(' ')
+            # if enable is false, limit the useable functions
             if self.enable is False:
                 if tokens[0] == "enable":
                     await message.channel.send("Torture Mode enabled. Get ready Miles.")
@@ -63,6 +70,7 @@ class MyClient(discord.Client):
                     await message.channel.send("I'm up and running, Torture Mode disabled.")
                 else:
                     await message.channel.send("Torture Mode is disabled. Type $enable to turn it on, or type $help.")
+            # else, all functions are usable and defined here
             else:
                 if tokens[0] == 'help':
                         await option(message.channel)
