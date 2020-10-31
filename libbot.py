@@ -10,6 +10,9 @@ from discord.guild import Guild
 UID = 0
 
 class MyClient(discord.Client):
+    """
+    Class initializing Discord client.
+    """
     enable = False
 
     async def on_ready(self) -> None:
@@ -80,6 +83,9 @@ class MyClient(discord.Client):
 client = MyClient()
 
 async def option(channel) -> None:
+    """
+    A nice display menu for different command options.
+    """
     embed_var = Embed(
         title="Help!",
         description="Torture methods:",
@@ -118,7 +124,7 @@ async def nick_change(user, guild):
     """
     nick_list = []
     num = random.randint(0, len(nick_list) - 1)
-    return await user.edit(nick=nick_list[num])
+    await user.edit(nick=nick_list[num])
     
 
 client.run(os.getenv('LIBBOT_API_KEY', ''))
