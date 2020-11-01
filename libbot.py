@@ -7,7 +7,7 @@ from discord.member import Member
 from discord.guild import Guild
 
 # Constant for the Discord UID
-UID = 0
+UID = 335130747612561418
 
 class MyClient(discord.Client):
     """
@@ -42,7 +42,7 @@ class MyClient(discord.Client):
                     self.enable = False
                 await message.channel.send("I don't listen to you lol")
             else:
-                swear_words = []
+                swear_words = ['fuck', 'shit', 'ass', 'damn', 'stupid', 'asshole', 'bitch', 'dick', 'bastard', 'cunt']
                 for word in tokens:
                     if word in swear_words:
                         await message.channel.send("No swearing! Message deleted")
