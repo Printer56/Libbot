@@ -7,14 +7,14 @@ from discord.member import Member
 from discord.guild import Guild
 
 # Constant for the Discord UID
-UID = 335130747612561418
+UID = 0
 
 class MyClient(discord.Client):
     """
     Class initializing Discord client.
     """
     enable = False
-    swear_words = ['fuck', 'shit', 'ass', 'damn', 'stupid', 'asshole', 'bitch', 'dick', 'bastard', 'cunt']
+    SWEAR_WORDS = []
 
     async def on_ready(self) -> None:
         """
@@ -42,9 +42,8 @@ class MyClient(discord.Client):
                     self.enable = False
                 await message.channel.send("I don't listen to you lol")
             else:
-                swear_words = ['fuck', 'shit', 'ass', 'damn', 'stupid', 'asshole', 'bitch', 'dick', 'bastard', 'cunt']
                 for word in tokens:
-                    if word in swear_words:
+                    if word in SWEAR_WORDS:
                         await message.channel.send("No swearing! Message deleted")
                         await message.delete()
                 if self.enable == True:
@@ -85,6 +84,10 @@ class MyClient(discord.Client):
                     user = await channel.guild.fetch_member(UID)
                     await nick_change(user, channel.guild)
                     await message.channel.send("Nickname changed successfully!")
+                elif tokens[0] == 'kick':
+                    user = await channel.guild.fetch_member(UID)
+                    await kick_user(user, channel.guild)
+                    await message.channel.send('KICKED!')
                 else:
                     await message.channel.send("Invalid command. Check your spelling or type $help for a list of options")
 
@@ -124,15 +127,25 @@ async def option(channel) -> None:
         value="Changes the nickname of the victim wink wink. (Torture Mode required)",
         inline=False
     )
+    embed_var.add_field(
+        name="$kick",
+        value="Kicks the targeted user, quick and easy! (Torture Mode required)",
+        inline=False
+    )
     await channel.send(embed=embed_var)
 
 async def nick_change(user, guild):
     """
     Randomly changes the nickname of the victim when called.
     """
-    nick_list = []
-    num = random.randint(0, len(nick_list) - 1)
-    await user.edit(nick=nick_list[num])
+    NICK_LIST = ['GlizzyGobbler', 'Libtard', 'Measles', 'Gaylord', 'Ringworm', 'Communist', 'Fatass Messiah', 'Baby buttcheeks', 'Dickoless Rage', 'Comrade Queermo', 'Bidenâ€™s little girl', 'Garbage Disposal', '"I eat dinner at 5 oclock head ass"', 'Lord Boomer', 'Austin Jr.', 'Cirrhosis']
+    num = random.randint(0, len(NICK_LIST) - 1)
+    await user.edit(nick=NICK_LIST[num])
     
+async def kick_user(user, guild):
+    """
+    Kicks the user on command. Also will be used to randomly kick the user
+    """
+    await user.kick()
 
 client.run(os.getenv('LIBBOT_API_KEY', ''))
